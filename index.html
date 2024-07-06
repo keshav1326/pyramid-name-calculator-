@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pyramid Number Calculation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(45deg, #2980b9, #6dd5fa, #ffffff);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 95vh;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        h1 {
+            color: #2980b9;
+        }
+
+        label {
+            font-size: 14px;
+            color: #555;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            padding: 10px;
+            margin: 8px 0;
+            width: 80%;
+            box-sizing: border-box;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            color: #333;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #4caf50, #45a049);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #45a049, #4caf50);
+        }
+
+        p {
+            font-size: 16px;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        span {
+            font-weight: bold;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Name Pyramid</h1>
+        <input type="text" id="nameInput" placeholder="Enter Name">
+        <button onclick="calculatePyramid()">Calculate</button>
+        <div class="output" id="output"></div>
+    </div>
+
+    <script>
+        const letterToNumber = {
+            'a': 1, 'i': 1, 'j': 1, 'q': 1, 'y': 1,
+            'b': 2, 'k': 2, 'r': 2,
+            'c': 3, 'g': 3, 'l': 3, 's': 3,
+            'd': 4, 'm': 4, 't': 4,
+            'h': 5, 'n': 5, 'e': 5, 'x': 5,
+            'u': 6, 'v': 6, 'w': 6,
+            'o': 7, 'z': 7,
+            'f': 8, 'p': 8
+        };
+
+        function calculatePyramid() {
+            const input = document.getElementById('nameInput').value.toLowerCase();
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            let numbers = input.split('').map(char => letterToNumber[char] || 0);
+            displayRow(numbers);
+
+            while (numbers.length > 2) {
+                const newRow = [];
+                for (let i = 0; i < numbers.length - 1; i++) {
+                    let sum = numbers[i] + numbers[i + 1];
+                    newRow.push(singleDigit(sum));
+                }
+                numbers = newRow;
+                displayRow(numbers);
+            }
+
+            if (numbers.length === 2) {
+                outputDiv.innerHTML += `<div>Final Output: ${numbers[0]}${numbers[1]}</div>`;
+            } else {
+                outputDiv.innerHTML += `<div>Final Output: ${numbers[0]}</div>`;
+            }
+        }
+
+        function singleDigit(number) {
+            while (number > 9) {
+                number = number.toString().split('').reduce((acc, digit) => acc + parseInt(digit), 0);
+            }
+            return number;
+        }
+
+        function displayRow(row) {
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML += `<div>${row.join(' ')}</div>`;
+        }
+    </script>
+</body>
+</html>
